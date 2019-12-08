@@ -1,6 +1,6 @@
 // Build a command-line application that at a minimum allows the user to:
 
-// View departments, 
+// DONE View departments, 
 // roles, 
 // DONE employees
 

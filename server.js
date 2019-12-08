@@ -24,7 +24,7 @@ const start = () => {
       type: "list",
       message: "What would you like to do today?",
       choices: ["1-View employees", 
-                "2-View a department", 
+                "2-View departments", 
                 "3-View roles", 
                 "4-Add an employee", 
                 "5-Add a new department", 
@@ -41,11 +41,11 @@ const start = () => {
       case "1-View employees":
         viewEmployee();
         break;
-      case "2-View department":
+      case "2-View departments":
         viewDept();
         break;
       case "3-View roles":
-        viewRole();
+        viewRoles();
         break;
       case "4-Add an employee":
         addEmployee();
@@ -74,8 +74,22 @@ const employee = [];
 const viewEmployee = () => {
   connection.query("SELECT * FROM employee", function (err, response) {
     console.table(response)
+    
   })
 }
+
+const viewDept = () => {
+connection.query("SELECT * FROM department", function (err, response) {
+    console.table(response)
+  })
+}
+
+const viewRoles = () => {
+  connection.query("SELECT * FROM role", function (err, response) {
+      console.table(response)
+    })
+  }
+
 
 const addEmployee = () => {
   lookUpRoleId();
