@@ -68,4 +68,7 @@ yarn-error.log
 # Yarn Integrity file
 .yarn-integrity
 
+#psuedo code
+pseudoCode.js
+
 
