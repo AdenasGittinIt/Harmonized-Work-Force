@@ -1,2 +1,2 @@
 # Harmonized-Work-Force
-A simple command line app to keep a workforce organized
+A simple command line app to keep track of your workforce.
