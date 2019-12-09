@@ -20,6 +20,7 @@ connection.connect(function (error) {
 
 const role = [];
 const employee = [];
+const dept = [];
 
 const start = () => {
   inquirer.prompt([
@@ -86,9 +87,9 @@ connection.query("SELECT * FROM department", function (err, response) {
 
 const viewRoles = () => {
   connection.query("SELECT * FROM role", function (err, response) {
-      console.table(response)
-    })
-  }
+    console.table(response)
+  })
+}
 
 const addEmployee = () => {
   lookUpRoleId();
@@ -96,29 +97,29 @@ const addEmployee = () => {
   inquirer.prompt([
     {
       type: "input",
-      message: "please enter the new employee's first name",
+      message: "Please enter the new employee's first name:",
       name: "firstName"
     }, {
       type: "input",
-      message: "please enter the new employee's last name",
+      message: "please enter the new employee's last name:",
       name: "lastName"
     }, {
       type: "list",
-      message: "Please select the new employee's role",
+      message: "Please select the new employee's role:",
       choices: role,
       name: "roleChoice"
     }, {
       type: "list",
-      message: "To whom will the new employee report",
+      message: "To whom will the new employee report?",
       choices: employee,
       name: "mngrChoice"
     }
   ]).then(function (userInput) {
-
     connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${userInput.firstName}', '${userInput.lastName}', ${userInput.roleChoice.split('-')[0]}, ${userInput.mngrChoice.split('-')[0]})`, function (err, response) {
       if (err) {
         console.log(err)
       }
+      //console log 
       console.log("The new employee is now harmonized with the workforce!")
     })
   })
@@ -137,7 +138,34 @@ const addDept = () => {
       if (err) {
         console.log(err)
       }
-      console.log("The new department is now harmonized for the workforce!")
+      console.log(`The new department number is ${response.insertId} and is now harmonized for the workforce!`);
+    })
+  })
+}
+
+const addRole = () => {
+  lookUpDeptId();
+  inquirer.prompt([
+    {
+      type: "input",
+      message: "Please enter the new role's title",
+      name: "title"
+    }, {
+      type: "input",
+      message: "What is the annual salary for this new role?",
+      name: "salary"
+    }, {
+      type: "list",
+      message: "To which department will the new role belong?",
+      choices: dept,
+      name: "deptChoice"
+    }, 
+  ]).then(function (userInput) {
+    connection.query(`INSERT INTO role (title, salary, department_id) VALUES ('${userInput.title}', '${userInput.salary}', ${userInput.deptChoice.split('-')[0]})`, function (err, response) {
+      if (err) {
+        console.log(err)
+      }
+      console.log(`The new role's ID number is ${response.insertId} and is now harmonized for the workforce!`)
     })
   })
 }
@@ -155,6 +183,15 @@ const lookUpEmployee = () => {
   connection.query("SELECT * FROM employee JOIN role on employee.role_id = role.id", function (err, response) {
     for (let index = 0; index < response.length; index++) {
       employee.push(`${response[index].id}-${response[index].first_name} ${response[index].last_name}, ${response[index].title}`)
+    }
+  })
+}
+
+const lookUpDeptId = () => {
+  connection.query("SELECT * FROM department", function (err, response) {
+    for (let i = 0; i < response.length; i++) {
+      dept.push(response[i].id + "-" + response[i].department_name);
+
     }
   })
 }
