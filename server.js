@@ -18,6 +18,9 @@ connection.connect(function (error) {
   start();
 })
 
+const role = [];
+const employee = [];
+
 const start = () => {
   inquirer.prompt([
     {
@@ -68,9 +71,6 @@ const start = () => {
   })
 }
 
-const role = [];
-const employee = [];
-
 const viewEmployee = () => {
   connection.query("SELECT * FROM employee", function (err, response) {
     console.table(response)
@@ -120,6 +120,24 @@ const addEmployee = () => {
         console.log(err)
       }
       console.log("The new employee is now harmonized with the workforce!")
+    })
+  })
+}
+
+const addDept = () => {
+  inquirer.prompt([
+    {
+      type: "input",
+      message: "What would you like to call the new department?",
+      name: "deptName"
+    }
+  ]).then(function (userInput) {
+
+    connection.query(`INSERT INTO department (department_name) VALUES ('${userInput.deptName}')`, function (err, response) {
+      if (err) {
+        console.log(err)
+      }
+      console.log("The new department is now harmonized for the workforce!")
     })
   })
 }

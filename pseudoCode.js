@@ -9,6 +9,16 @@ import { resolve } from "dns"
 
 
 // Add departments, 
+  //after I create the new department, I want to run a function to get the new department's id# and perhaps display the new department in the full list of departmemts.  Is there CLI code I can use to highlight the new depatment name on the list?
+
+  .then(function () {
+    connection.query("SELECT LAST_INSERT_ID()", function (err, res) {
+      console.log(res)
+    })
+  })
+
+
+  connection.query("SELECT LAST_INSERT_ID()")
 // roles, 
 // DONE employees
 
