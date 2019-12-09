@@ -1,4 +1,5 @@
 
+
 INSERT INTO department
     (department_name)
 VALUES
@@ -38,3 +39,13 @@ VALUES
     ('Sheila', 'Marrit', 10, 9),
     ('Arnold', 'Palmroy', 11, NULL),
     ('Raymond', 'Cox', 12, 11);
+
+
+
+
+
+select order_date, order_amount
+from customers
+join orders
+   on customers.customer_id = orders.customer_id
+where customer_id = 3
