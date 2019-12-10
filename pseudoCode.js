@@ -1,4 +1,3 @@
-import { resolve } from "dns"
 
 // Build a command-line application that at a minimum allows the user to:
 
@@ -19,11 +18,16 @@ import { resolve } from "dns"
 // DONE roles, 
 // DONE employees
 
-
-
-
-
 // Update employee roles
+//to update an eployee's role I have to look up and list employees and use them in my inquiror prompt. Select the employee you'd like to update.  
+
+// I need to also look up and list the current roles available and list them in an inquirer prompt.  (select the employee's new role) BONUS - would you like to update the employee's role or manager
+
+//I then need to run a fuction to update the employee table where the id matches the selected employee's id
+
+
+
+
 
 // Bonus points if you're able to:
 
@@ -60,3 +64,39 @@ import { resolve } from "dns"
 //prompt them for what they want to do next
 //choices are restart the app or exit
 
+
+inquirer.prompt([
+    {
+      type: "list",
+      message: "Which Employee would you like to update?",
+      choices: employee,
+      name: "eeToUpdate"
+    }, {
+      type: "list",
+      message: "What information would you like to update?",
+      choices: ["First name", "Last name", "Role"],
+      name: "infoToUpdate"
+    }])
+
+    // salary is not currently saved as a decimal.  I also would like a thousands separator.
+
+
+//OLD
+    const lookUpEmployee = () => {
+      connection.query("SELECT * FROM employee JOIN role on employee.role_id = role.id", function (err, response) {
+        for (let index = 0; index < response.length; index++) {
+          employee.push(`${response[index].id}-${response[index].first_name} ${response[index].last_name}, ${response[index].title}`)
+        }
+      })
+    }
+
+    //NEW
+
+    let lookUpEmployee = new Promise((resolve, reject) => {      
+      connection.query("SELECT * FROM employee JOIN role on employee.role_id = role.id", function (err, response) {
+        for (let index = 0; index < response.length; index++) {
+          employee.push(`${response[index].id}-${response[index].first_name} ${response[index].last_name}, ${response[index].title}`)
+          resolve(employee)
+        }
+      })
+    });

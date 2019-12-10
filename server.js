@@ -14,7 +14,7 @@ connection.connect(function (error) {
   if (error) {
     console.log(error)
   }
-  console.log("Connected as id", connection.threadId)
+  console.log("Connected as id", connection.threadId, "Let's begin!")
   start();
 })
 
@@ -62,6 +62,7 @@ const start = () => {
         break;
       case "7-Update an employee":
         updateEmployee();
+        break;
       case "8-Update a role":
         updateEmployee();
         break;
@@ -173,21 +174,29 @@ const addRole = () => {
 const lookUpRoleId = () => {
   connection.query("SELECT * FROM role", function (err, response) {
     for (let index = 0; index < response.length; index++) {
-      role.push(response[index].id + "-" + response[index].title);
-
+      role.push(`${response[index].id} - ${response[index].title} with an annual salary of ${response[index].salary}`);
     }
   })
 }
 
-const lookUpEmployee = () => {
-  connection.query("SELECT * FROM employee JOIN role on employee.role_id = role.id", function (err, response) {
-    for (let index = 0; index < response.length; index++) {
-      employee.push(`${response[index].id}-${response[index].first_name} ${response[index].last_name}, ${response[index].title}`)
+const updateEmployee = () => {
+  lookUpEmployee.then((employee) => {
+  inquirer.prompt([
+    {
+      type: "list",
+      message: "Which Employee would you like to update?",
+      choices: employee,
+      name: "eeToUpdate"
+    }, {
+      type: "list",
+      message: "What information would you like to update?",
+      choices: ["First name", "Last name", "Role"],
+      name: "infoToUpdate"
     }
-  })
-}
+  ]).then(console.log(employee));
+})}
 
-const lookUpDeptId = () => {
+  const lookUpDeptId = () => {
   connection.query("SELECT * FROM department", function (err, response) {
     for (let i = 0; i < response.length; i++) {
       dept.push(response[i].id + "-" + response[i].department_name);
@@ -195,3 +204,12 @@ const lookUpDeptId = () => {
     }
   })
 }
+
+let lookUpEmployee = new Promise((resolve, reject) => {      
+  connection.query("SELECT * FROM employee JOIN role on employee.role_id = role.id", function (err, response) {
+    for (let index = 0; index < response.length; index++) {
+      employee.push(`${response[index].id}-${response[index].first_name} ${response[index].last_name}, ${response[index].title}`)
+      resolve(employee)
+    }
+  })
+});
