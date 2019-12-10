@@ -26,3 +26,6 @@ CREATE TABLE employee (
   PRIMARY KEY (id)
 );
 
+SELECT employee.id, employee.first_name, employee.last_name, role.title, role.id
+FROM employee
+INNER JOIN role ON employee.role_id = role.id;

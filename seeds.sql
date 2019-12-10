@@ -49,3 +49,11 @@ from customers
 join orders
    on customers.customer_id = orders.customer_id
 where customer_id = 3
+
+
+
+UPDATE employee 
+SET 
+    role_id = userInput.newRole.split(' - ')[0],
+WHERE
+    userInput.eeToUpdat.split(' - ')[0] = employee.id;
