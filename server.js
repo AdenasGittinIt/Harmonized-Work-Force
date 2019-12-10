@@ -1,3 +1,4 @@
+// future dev... add figlet "graphics"
 const inquirer = require("inquirer")
 const mysql = require("mysql")
 const cTable = require("console.table");
@@ -26,7 +27,7 @@ const start = () => {
   inquirer.prompt([
     {
       type: "list",
-      message: "What would you like to do today?",
+      message: "Keep your workforce humming along in perfect harmoney! Select an option below.",
       choices: ["1-View employees", 
                 "2-View departments", 
                 "3-View roles", 
@@ -67,20 +68,22 @@ const start = () => {
 
 const viewEmployee = () => {
   connection.query("SELECT * FROM employee", function (err, response) {
-    console.table(response)
-    
+    console.table(response);
+    whatNext();
   })
 }
 
 const viewDept = () => {
 connection.query("SELECT * FROM department", function (err, response) {
-    console.table(response)
+    console.table(response);
+    whatNext();
   })
 }
 
 const viewRoles = () => {
   connection.query("SELECT * FROM role", function (err, response) {
-    console.table(response)
+    console.table(response);
+    whatNext();
   })
 }
 
@@ -115,6 +118,7 @@ const addEmployee = () => {
         console.log("The new employee is now harmonized with the workforce!");
         empty(employee);
         empty(role);
+        whatNext();
       })
     })
   })
@@ -134,6 +138,7 @@ const addDept = () => {
         console.log(err)
       }
       console.log(`The new department number is ${response.insertId} and is now harmonized for the workforce!`);
+      whatNext();
     })
   })
 }
@@ -160,7 +165,8 @@ const addRole = () => {
       if (err) {
         console.log(err)
       }
-      console.log(`The new role's ID number is ${response.insertId} and is now harmonized for the workforce!`)
+      console.log(`The new role's ID number is ${response.insertId} and is now harmonized for the workforce!`);
+      whatNext();
     })
   })
 }
@@ -190,6 +196,7 @@ const updateEmployee = () => {
           console.log("The employee is now harmonized in their new role!");
           empty(employee);
           empty(role);
+          whatNext();
         })
       })
   })
@@ -224,4 +231,28 @@ const lookUpDeptId = () => {
 
 const empty = (array) => {
     array.length = 0;
+}
+
+function whatNext() {
+  inquirer.prompt([
+    {
+      type: "list",
+      message: "What would you like to do next?",
+      choices: ["Continue Harmonizing!", "That's enough harmony for today, please exit."],
+      name: "nextAction"
+    }])
+    .then(function (userInput) {
+      switch (userInput.nextAction) {
+        case "Continue Harmonizing!":
+          start();
+          break;
+        case "That's enough harmony for today, please exit.":
+          connection.end(function(err) {
+            if (err) {
+              console.log(err);
+            }
+          })
+          break;
+      }
+    })
 }

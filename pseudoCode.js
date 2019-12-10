@@ -110,3 +110,33 @@ inquirer.prompt([
       console.log("Yay! " + successMessage);
     });
 
+
+
+
+// select order_date, order_amount
+// from customers
+// join orders
+//    on customers.customer_id = orders.customer_id
+// where customer_id = 3
+
+
+
+// UPDATE employee 
+// SET 
+//     role_id = userInput.newRole.split(' - ')[0],
+// WHERE
+//     userInput.eeToUpdat.split(' - ')[0] = employee.id;
+
+
+// SELECT employee.id, employee.first_name, employee.last_name, role.title, role.id
+// FROM employee
+// INNER JOIN role ON employee.role_id = role.id;
+
+
+  switch (userInput.choice) {
+    case "Continue harmonizing!":
+      start();
+      break;
+    case "That's enough harmony for today, please exit.":
+      viewDept();
+      break;
